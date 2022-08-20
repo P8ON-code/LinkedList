@@ -70,20 +70,19 @@ public:
 	}
 	int at(int index)
 	{
-		if (index == 0)
-		{
-			return (*begin_ptr).value;
-		}
-		else
-		{
+		
 			auto temp = begin_ptr;
 			for (int i = 0; i < index; i++)
 			{
 				temp = (*temp).next;
 			}
 			return (*temp).value;
-		}
+		
 
+	}
+	std::shared_ptr<Node> getPtrFirst()
+	{
+		return begin_ptr;
 	}
 	int getFirst()
 	{
@@ -122,6 +121,12 @@ int main()
 	std::cout << "\n\n\n";
 
 	lista.PrintAll();
+
+	std::shared_ptr<List> ll = std::make_shared<List>(lista);
+	std::cout<<ll.get()->getFirst()<<std::endl;
+	std::weak_ptr<List> weak = ll;
+	std::cout<<weak.lock().get()->getLast()<<std::endl; //przez chwilę traktujemy weak_ptr tak jak shared_ptr dzięki .lock() co daje nam dostęp do metod sahred_ptr :>
+
 
 	//std::cout << lista.getSize() << std::endl;
 	//std::cout<<"\n\n\n";
