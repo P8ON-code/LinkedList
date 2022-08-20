@@ -110,23 +110,33 @@ public:
 
 int main()
 {
-	List lista;
-	for (int i=0; i < 20; i++)
+	std::weak_ptr<List> weak;
 	{
-		lista.push_back(i+1);
-		std::cout << lista.at(i) << std::endl;
+		List lista;
+		for (int i = 0; i < 20; i++)
+		{
+			lista.push_back(i + 1);
+			std::cout << lista.at(i) << std::endl;
+		}
+
+
+		std::cout << "\n\n\n";
+
+		lista.PrintAll();
+	
+		std::shared_ptr<List> ll = std::make_shared<List>(lista);
+		std::cout << ll.get()->getFirst() << std::endl;
+		weak = ll;
+		std::cout << weak.lock().get()->getLast() << std::endl; //przez chwilę traktujemy weak_ptr tak jak shared_ptr dzięki .lock() co daje nam dostęp do metod sahred_ptr :>
 	}
-
-
-	std::cout << "\n\n\n";
-
-	lista.PrintAll();
-
-	std::shared_ptr<List> ll = std::make_shared<List>(lista);
-	std::cout<<ll.get()->getFirst()<<std::endl;
-	std::weak_ptr<List> weak = ll;
-	std::cout<<weak.lock().get()->getLast()<<std::endl; //przez chwilę traktujemy weak_ptr tak jak shared_ptr dzięki .lock() co daje nam dostęp do metod sahred_ptr :>
-
+	if (!weak.expired())
+	{
+		std::cout << "Niestety obiekt juz nie istnieje :<\n";
+	}
+	else
+	{ 
+		std::cout << "O to dale istnieje! :>\n"; //istnieje bo użyliśmy locka :>
+	}
 
 	//std::cout << lista.getSize() << std::endl;
 	//std::cout<<"\n\n\n";
